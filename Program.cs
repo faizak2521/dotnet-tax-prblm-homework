@@ -1,35 +1,32 @@
 ﻿// Faiza Khan
 // 1 Feb. 2026
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
+using System.Globalization; // for NumberStyles
 
-// Entry point (top-level program)
+// try for exceptions during file read and parsing
 try
 {
-    // 1) Load tax brackets from CSV
+    // Load tax brackets from CSV
     var brackets = ReadTaxTable("tax_table.csv");
 
-    // 2) Prompt user for taxable income
+    // Prompt user for taxable income
     Console.Write("Enter taxable income: ");
     string? input = Console.ReadLine();
 
     if (string.IsNullOrWhiteSpace(input))
         throw new ArgumentException("No income was entered.");
 
-    // Use invariant culture so 17894.00 parses reliably
+    // Use invariant culture so 17894.00 parses reliably (not locale-dependent **add to notes)
     if (!decimal.TryParse(input.Trim(), NumberStyles.Number, CultureInfo.InvariantCulture, out decimal income))
         throw new FormatException("Income must be a valid number (example: 25000 or 25000.00).");
 
     if (income < 0)
         throw new ArgumentOutOfRangeException(nameof(income), "Income must be non-negative.");
 
-    // 3) Calculate tax
+    // Calculate tax
     decimal tax = TaxCalculator.Calculate(income, brackets);
 
-    // 4) Print result
+    // Print result
     Console.WriteLine($"Tax owed: ${tax:F2}");
 }
 catch (FileNotFoundException)
@@ -66,7 +63,7 @@ static List<TaxBracket> ReadTaxTable(string path)
         if (parts.Length < 5)
             throw new InvalidDataException($"CSV row {i + 1} does not have 5 columns.");
 
-        try
+        try // parse each column into a TaxBracket
         {
             brackets.Add(new TaxBracket
             {
@@ -82,8 +79,7 @@ static List<TaxBracket> ReadTaxTable(string path)
             throw new InvalidDataException($"CSV row {i + 1} has an invalid number format.");
         }
     }
-
-    // Optional: sort by MinIncome so the calculator can assume correct order
+    // sorts by MinIncome so the calculator can assume correct order
     brackets.Sort((a, b) => a.MinIncome.CompareTo(b.MinIncome));
 
     return brackets;
@@ -105,7 +101,6 @@ public static class TaxCalculator
                 return tax < 0 ? 0 : tax;
             }
         }
-
         throw new InvalidOperationException("Income did not match any tax bracket. Check the CSV ranges.");
     }
 }
