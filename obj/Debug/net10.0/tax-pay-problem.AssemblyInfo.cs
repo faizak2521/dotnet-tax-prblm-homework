@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("tax-pay-problem")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2642d1ba3dc454f2a9e31e3e801da4942fd772bc")]
 [assembly: System.Reflection.AssemblyProductAttribute("tax-pay-problem")]
 [assembly: System.Reflection.AssemblyTitleAttribute("tax-pay-problem")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
